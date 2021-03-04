@@ -8,8 +8,12 @@
 Configure istio `MeshConfig.OutboundTrafficPolicy.Mode` to be `REGISTRY_ONLY` in order to avoid pods to access any internet endpoint.  
 Reference: [Istio - Global Mesh Options](https://istio.io/latest/docs/reference/config/istio.mesh.v1alpha1/#MeshConfig)
 ## ISTIO Grafana monitor
-Follow this [page](https://istio.io/latest/docs/tasks/observability/metrics/using-istio-dashboard/) to configure istio dashboard with grafana running in the same kubernetes cluster.
+Follow this [page](https://istio.io/latest/docs/tasks/observability/metrics/using-istio-dashboard/) to configure istio dashboard with grafana running in the same kubernetes cluster.  
+To start the dashboard client run
+```bash
+istioctl dashboard grafana
+```
 ## ISTIO ingress gateway logs
-`
+```bash
 kubectl logs -n istio-system "$(kubectl get pod -l istio=ingressgateway -n istio-system -o jsonpath='{.items[0].metadata.name}')"
-`
+```
