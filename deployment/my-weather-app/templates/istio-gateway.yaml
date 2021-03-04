@@ -1,0 +1,46 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: {{ include "my-weather-app.gateway" . }}
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "default/*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: my-weather-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - {{ include "my-weather-app.gateway" . }}
+  http:
+  - match:
+    - uri:
+        prefix: /app/
+    route:
+    - destination:
+        host: {{ include "my-weather-app.appfqdn" . }}
+        port:
+          number: {{ .Values.service.port }}
+    rewrite:
+      uri: "/"
+  - match:
+    - uri:
+        prefix: /api/
+    route:
+    - destination:
+        host: {{ include "my-weather-app.apifqdn" . }}
+        port:
+          number: {{ .Values.service.apiport }}
+    rewrite:
+      uri: "/"
+  

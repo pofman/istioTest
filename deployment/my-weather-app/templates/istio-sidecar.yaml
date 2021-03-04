@@ -1,0 +1,61 @@
+# apiVersion: networking.istio.io/v1alpha3
+# kind: Sidecar
+# metadata:
+#   name: weatherapp
+#   namespace: default
+# spec:
+#   workloadSelector:
+#     labels:
+#       app.kubernetes.io/name: {{ include "my-weather-app.name" . }}
+#   ingress:
+#   - port:
+#       number: 80
+#       protocol: HTTP
+#       name: appservice
+#     defaultEndpoint: 127.0.0.1:80
+#   egress:
+#   - port:
+#       number: 80
+#       protocol: HTTP
+#       name: egresshttp
+#     hosts:
+#     - "default/*"
+#   - port:
+#       number: 443
+#       protocol: TLS
+#       name: egresshttps
+#     hosts:
+#     - "default/*"
+#   - hosts:
+#     - "istio-system/*"
+# ---
+# apiVersion: networking.istio.io/v1alpha3
+# kind: Sidecar
+# metadata:
+#   name: weatherapi
+#   namespace: default
+# spec:
+#   workloadSelector:
+#     labels:
+#       app.kubernetes.io/name: {{ include "my-weather-app.api" . }}
+#   ingress:
+#   - port:
+#       number: 80
+#       protocol: HTTP
+#       name: apiservice
+#     defaultEndpoint: 127.0.0.1:80
+#   egress:
+#   - port:
+#       number: 80
+#       protocol: HTTP
+#       name: egresshttp
+#     hosts:
+#     - "default/*"
+#   - port:
+#       number: 443
+#       protocol: TLS
+#       name: egresshttps
+#     hosts:
+#     - "default/*"
+#   - hosts:
+#     - "istio-system/*"

@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "my-weather-app.fullname" . }}
+  labels:
+    {{- include "my-weather-app.labels" . | nindent 4 }}
+    {{- include "my-weather-app.selectorLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "my-weather-app.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "my-weather-app.apifullname" . }}
+  labels:
+    {{- include "my-weather-app.labels" . | nindent 4 }}
+    {{- include "my-weather-app.apiselectorLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.apiport }}
+      targetPort: 80
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "my-weather-app.apiselectorLabels" . | nindent 4 }}
